@@ -7,8 +7,6 @@ module.exports = {
 	},
 
 	rules: {
-		semi: ['warn', 'always'],
-
 		// own for ES6
 		'comma-dangle': 'off',
 		quotes: 'off',
@@ -72,10 +70,7 @@ module.exports = {
 			'warn',
 			{
 				singleline: 99,
-				multiline: {
-					max: 1,
-					allowFirstLine: false
-				}
+				multiline: 1
 			}
 		],
 		// allow <v-button>CTA</v-button>
