@@ -75,6 +75,10 @@
 		methods: {
 			fetchGifs() {
 				// do something in the future
+
+				// ToDo: reset gifs before new query if searchTerm changed
+				// ToDo: perform search with new searchTerm
+				// ToDo: merge common functionality from index page and search page into a mixin
 			},
 
 			// @ts-ignore
