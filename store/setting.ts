@@ -5,34 +5,35 @@ import type { RootState } from './index'
 export const namespace = 'setting'
 
 export interface SettingState {
-  darkMode: boolean
+	darkMode: boolean
 }
 
 export const state = (): SettingState => ({
-  darkMode: false
+	darkMode: false
 })
 
-export const getters: GetterTree<SettingState, RootState> = {
-}
+export const getters: GetterTree<SettingState, RootState> = {}
 
 export const MutationType = {
-  CHANGE_DARK_MODE: 'changeDarkMode'
+	CHANGE_DARK_MODE: 'changeDarkMode'
 }
 
 export const mutations: MutationTree<SettingState> = {
-  [MutationType.CHANGE_DARK_MODE]: (state, newMode: boolean) => { state.darkMode = newMode }
+	[MutationType.CHANGE_DARK_MODE]: (state, newMode: boolean) => {
+		state.darkMode = newMode
+	}
 }
 
 export const actionType = {
-  TOGGLE_DARK_MODE: 'toggleDarkMode'
+	TOGGLE_DARK_MODE: 'toggleDarkMode'
 }
 
 export const actions: ActionTree<SettingState, RootState> = {
-  nuxtServerInit ({ commit }, _context: Context) {
-    commit(MutationType.CHANGE_DARK_MODE, true)
-  },
+	nuxtServerInit({ commit }, _context: Context) {
+		commit(MutationType.CHANGE_DARK_MODE, true)
+	},
 
-  [actionType.TOGGLE_DARK_MODE] ({ commit, state }) {
-    commit(MutationType.CHANGE_DARK_MODE, !state.darkMode)
-  }
+	[actionType.TOGGLE_DARK_MODE]({ commit, state }) {
+		commit(MutationType.CHANGE_DARK_MODE, !state.darkMode)
+	}
 }
