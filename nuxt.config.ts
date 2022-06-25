@@ -38,7 +38,13 @@ const config: NuxtConfig = {
 				content: 'A very special project for some very special people by a very special person <3'
 			}
 		],
-		link: []
+		link: [
+			{ rel: 'apple-touch-icon', sizes: '152x152', href: '../favicon/apple-touch-icon.png' },
+			{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '../favicon/favicon-32x32.png' },
+			{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '../favicon/favicon-16x16.png' },
+			{ rel: 'manifest', href: '../favicon/site.webmanifest.txt' },
+			{ rel: 'mask-icon', href: '../favicon/safari-pinned-tab.svg', color: '#26262b' },
+		]
 	},
 
 	loading: { color: '#0c64c1' },
