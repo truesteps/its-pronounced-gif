@@ -1,7 +1,7 @@
 {
-	"name": "nuxt-community-typescript-template",
-	"description": "A boilerplate to start a Nuxt+TS project quickly",
-	"version": "2.15.8",
+	"name": "its-pronounced-gif",
+	"description": "A very special project for some very special people by a very special person <3",
+	"version": "1.0.69",
 	"private": true,
 	"dependencies": {
 		"nuxt": "2.15.8"
