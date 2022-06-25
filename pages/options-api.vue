@@ -62,21 +62,21 @@
 		fetchOnServer: false,
 		middleware: 'user-agent',
 
-		asyncData(context) {
+		asyncData (context) {
 			return {
-				asyncMessage: "I'm defined on asyncData()",
+				asyncMessage: 'I\'m defined on asyncData()',
 				userAgent: context.userAgent
 			}
 		},
 
-		data() {
+		data () {
 			return {
-				message: "I'm defined on data()",
+				message: 'I\'m defined on data()',
 				fetchedTodos: [] as ToDo[]
 			}
 		},
 
-		fetch() {
+		fetch () {
 			return fetch('https://jsonplaceholder.typicode.com/todos')
 				.then(response => response.json())
 				.then((data: ToDo[]) => {
@@ -84,7 +84,7 @@
 				})
 		},
 
-		head(): MetaInfo {
+		head (): MetaInfo {
 			return {
 				title: 'Options API Demo',
 				meta: [{
@@ -95,7 +95,7 @@
 		},
 
 		computed: {
-			computedMessage(): string {
+			computedMessage (): string {
 				return this.message.replace('data()', 'computed()')
 			},
 

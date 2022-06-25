@@ -14,8 +14,8 @@ module.exports = {
 		'no-console': 'off',
 		'no-case-declarations': 'off',
 		'no-unused-vars': 'off',
-		'semi-style': 'off',
 		'no-tabs': 'off',
+		semi: 'off',
 		'no-underscore-dangle': 'off',
 		indent: ['error', 'tab', { SwitchCase: 1 }],
 		'spaced-comment': 'off',
@@ -34,14 +34,6 @@ module.exports = {
 		'no-unmodified-loop-condition': 'off',
 		'vue/require-default-prop': 'off',
 		'vue/require-prop-types': 'off',
-		'space-before-function-paren': [
-			'warn',
-			{
-				anonymous: 'always',
-				named: 'never',
-				asyncArrow: 'always'
-			}
-		],
 
 		// *.vue files
 		// base indent at <script> tag
