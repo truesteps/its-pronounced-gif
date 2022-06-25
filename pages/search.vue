@@ -20,6 +20,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { debounce } from 'ts-debounce';
 
 	export default Vue.extend({
 		name: 'SearchPage',
@@ -28,6 +29,7 @@
 			return {
 				search: '' as string,
 				searchTermLengthThreshold: 3 as number,
+				debounceTimeMs: 200 as number,
 			};
 		},
 
@@ -73,7 +75,10 @@
 		methods: {
 			fetchGifs() {
 				// do something in the future
-			}
+			},
+
+			// @ts-ignore
+			debouncedFetchGifs: debounce(this.fetchGifs, this.debounceTimeMs),
 		}
 	});
 </script>
