@@ -8,25 +8,27 @@ export const Namespace = 'gifs';
 export interface GifsState {
 	isLoading: boolean;
 	trendingGifs: Gif[];
-	nextTrendingGifsPosition: string | null;
+	trendingGifsNextPosition: string | null;
 	gifs: Gif[];
-	nextGifsPosition: string | null;
+	gifsNextPosition: string | null;
 }
 
 export const state = (): GifsState => ({
 	isLoading: false,
 	trendingGifs: [],
-	nextTrendingGifsPosition: null,
+	trendingGifsNextPosition: null,
 	gifs: [],
-	nextGifsPosition: null,
+	gifsNextPosition: null,
 });
 
 export const MutationType = {
 	SET_IS_LOADING: 'setIsLoading',
 	SET_TRENDING_GIFS: 'setTrendingGifs',
 	SET_TRENDING_GIFS_NEXT_POSITION: 'setTrendingGifsNextPosition',
+	RESET_TRENDING_GIFS: 'resetTrendingGifs',
 	SET_GIFS: 'setGifs',
 	SET_GIFS_NEXT_POSITION: 'setGifsNextPosition',
+	RESET_GIFS: 'resetGifs',
 };
 
 export const mutations: MutationTree<GifsState> = {
@@ -35,7 +37,7 @@ export const mutations: MutationTree<GifsState> = {
 	},
 
 	[MutationType.SET_TRENDING_GIFS]: (state, newTrendingGifs: Gif[]) => {
-		if (state.nextTrendingGifsPosition !== null) {
+		if (state.trendingGifsNextPosition !== null) {
 			state.trendingGifs = [...state.trendingGifs, ...newTrendingGifs];
 		} else {
 			state.trendingGifs = newTrendingGifs;
@@ -43,20 +45,30 @@ export const mutations: MutationTree<GifsState> = {
 	},
 
 	[MutationType.SET_TRENDING_GIFS_NEXT_POSITION]: (state, nextPosition: string | null) => {
-		state.nextTrendingGifsPosition = nextPosition;
+		state.trendingGifsNextPosition = nextPosition;
 	},
 
-	[MutationType.SET_GIFS_NEXT_POSITION]: (state, nextPosition: string | null) => {
-		state.nextGifsPosition = nextPosition;
+	[MutationType.RESET_TRENDING_GIFS]: (state) => {
+		state.trendingGifs = [];
+		state.trendingGifsNextPosition = null;
 	},
 
 	[MutationType.SET_GIFS]: (state, newGifs: Gif[]) => {
-		if (state.nextGifsPosition !== null) {
+		if (state.gifsNextPosition !== null) {
 			state.gifs = [...state.gifs, ...newGifs];
 		} else {
 			state.gifs = newGifs;
 		}
 	},
+
+	[MutationType.SET_GIFS_NEXT_POSITION]: (state, nextPosition: string | null) => {
+		state.gifsNextPosition = nextPosition;
+	},
+
+	[MutationType.RESET_GIFS]: (state) => {
+		state.gifs = [];
+		state.gifsNextPosition = null;
+	}
 };
 
 export const ActionType = {
@@ -68,8 +80,8 @@ export const actions: ActionTree<GifsState, RootState> = {
 	async [ActionType.FETCH_TRENDING_GIFS]({ commit, state }, params) {
 		commit(MutationType.SET_IS_LOADING, true);
 
-		if (state.nextTrendingGifsPosition) {
-			params.pos = state.nextTrendingGifsPosition;
+		if (state.trendingGifsNextPosition) {
+			params.pos = state.trendingGifsNextPosition;
 		}
 
 		// extract results from response, corresponds to Gif[]

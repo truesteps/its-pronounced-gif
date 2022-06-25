@@ -35,9 +35,9 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { mapActions, mapMutations, mapState } from 'vuex';
 
-	import { ActionType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
-	import { mapActions, mapState } from 'vuex';
+	import { ActionType, MutationType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
 	import GifCard from '~/components/GifCard.vue';
 	import ShowMoreGifs from '~/components/ShowMoreGifs.vue';
 
@@ -89,6 +89,10 @@
 			this.load();
 		},
 
+		beforeDestroy() {
+			this.resetTrendingGifs();
+		},
+
 		methods: {
 			async load(): Promise<void> {
 				await this.fetchTrendingGifs({
@@ -100,7 +104,11 @@
 
 			...mapActions(GifsStoreNamespace, {
 				fetchTrendingGifs: ActionType.FETCH_TRENDING_GIFS,
-			})
+			}),
+
+			...mapMutations(GifsStoreNamespace, {
+				resetTrendingGifs: MutationType.RESET_TRENDING_GIFS,
+			}),
 		}
 	});
 </script>
