@@ -1,14 +1,6 @@
 <template>
 	<v-app>
-		<v-navigation-drawer app permanent>
-			<v-list-item @click="$router.push('/')">
-				<v-list-item-content>
-					<v-list-item-title class="text-h6 text-center">
-						It's pronounced /dʒɪf/
-					</v-list-item-title>
-				</v-list-item-content>
-			</v-list-item>
-
+		<v-navigation-drawer v-model="isNavbarOpen" app>
 			<v-divider />
 
 			<v-list
@@ -34,6 +26,16 @@
 			</v-list>
 		</v-navigation-drawer>
 
+		<v-app-bar app>
+			<v-app-bar-nav-icon @click="toggleNavbar" />
+
+			<v-toolbar-title @click="$router.push('/')">
+				<div class="text-h6">
+					It's pronounced /dʒɪf/
+				</div>
+			</v-toolbar-title>
+		</v-app-bar>
+
 		<v-main>
 			<v-container fluid>
 				<nuxt />
@@ -43,11 +45,21 @@
 </template>
 
 <script lang="ts">
-	export default {
+	import Vue from 'vue';
+
+	interface MenuItem {
+		label: string;
+		icon: string;
+		to: string;
+	}
+
+	export default Vue.extend({
 		name: 'DefaultLayout',
 
 		data() {
 			return {
+				isNavbarOpen: false as boolean,
+
 				items: [
 					{
 						label: 'Trends',
@@ -59,12 +71,14 @@
 						to: '/search',
 						icon: 'mdi-magnify'
 					}
-				] as {
-					label: string
-					icon: string
-					to: string
-				}[]
+				] as MenuItem[]
 			};
 		},
-	};
+
+		methods: {
+			toggleNavbar(): void {
+				this.isNavbarOpen = !this.isNavbarOpen;
+			},
+		},
+	});
 </script>
