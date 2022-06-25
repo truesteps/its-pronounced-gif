@@ -9,6 +9,16 @@
 				</v-col>
 			</v-row>
 
+			<v-row>
+				<v-col v-for="trendingGif in trendingGifs" :key="trendingGif.id" cols="12" sm="6" md="4" lg="3">
+					<gif-card :gif="trendingGif" />
+				</v-col>
+
+				<v-col key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
+					<show-more-gifs />
+				</v-col>
+			</v-row>
+
 			<v-row v-if="isLoading">
 				<v-col v-for="loader in loaders" :key="loader" cols="12" sm="6" md="4" lg="3">
 					<v-skeleton-loader
@@ -17,12 +27,6 @@
 						type="card"
 						elevation="1"
 					/>
-				</v-col>
-			</v-row>
-
-			<v-row v-else>
-				<v-col v-for="trendingGif in trendingGifs" :key="trendingGif.id" cols="12" sm="6" md="4" lg="3">
-					<gif-card :gif="trendingGif" />
 				</v-col>
 			</v-row>
 		</v-col>
@@ -35,11 +39,13 @@
 	import { ActionType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
 	import { mapActions, mapState } from 'vuex';
 	import GifCard from '~/components/GifCard.vue';
+	import ShowMoreGifs from '~/components/ShowMoreGifs.vue';
 
 	export default Vue.extend({
 		name: 'PageIndex',
 
 		components: {
+			ShowMoreGifs,
 			GifCard
 		},
 
