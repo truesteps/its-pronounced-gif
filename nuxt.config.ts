@@ -45,12 +45,19 @@ const config: NuxtConfig = {
 
 	modules: [
 		// https://go.nuxtjs.dev/axios
-		'@nuxtjs/axios'
+		'@nuxtjs/axios',
+		// https://github.com/chantouchsek/nuxt-clipboard
+		'nuxt-clipboard',
 	],
 
 	plugins: [
 		'~/plugins/truncate'
 	],
+
+	// Nuxt clipboard module configuration https://github.com/chantouchsek/nuxt-clipboard
+	clipboard: {
+		autoSetContainer: true
+	},
 
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
 	axios: {

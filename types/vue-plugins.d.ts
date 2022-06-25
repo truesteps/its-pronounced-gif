@@ -5,6 +5,8 @@ import { NuxtAxiosInstance } from '@nuxtjs/axios';
 declare module 'vue/types/vue' {
 	interface Vue {
 		$axios: NuxtAxiosInstance;
+		// for whatever reason TS doesn't get that this module comes with types... sadge
+		$copyText: Function;
 	}
 }
 
