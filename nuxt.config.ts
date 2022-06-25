@@ -1,4 +1,6 @@
-import type { NuxtConfig } from '@nuxt/types'
+import type { NuxtConfig } from '@nuxt/types';
+
+require('dotenv').config({ path: '.env' });
 
 const config: NuxtConfig = {
 	ssr: false,
@@ -15,7 +17,11 @@ const config: NuxtConfig = {
 
 	css: [],
 
-	env: {},
+	publicRuntimeConfig: {
+		tenorApiKey: process.env.TENOR_API_KEY,
+		tenorClientKey: process.env.TENOR_CLIENT_KEY,
+		tenorBaseUrl: process.env.TENOR_BASE_URL,
+	},
 
 	head: {
 		titleTemplate: '%s - It\'s pronounced /dʒɪf/',
@@ -29,7 +35,7 @@ const config: NuxtConfig = {
 			{
 				hid: 'description',
 				name: 'description',
-				content: 'A boilerplate to start a Nuxt+TS project quickly'
+				content: 'A very special project for some very special people by a very special person <3'
 			}
 		],
 		link: []
@@ -45,6 +51,21 @@ const config: NuxtConfig = {
 	plugins: [
 		'~/plugins/truncate'
 	],
+
+	// Axios module configuration: https://go.nuxtjs.dev/config-axios
+	axios: {
+		proxy: true,
+		baseURL: process.env.TENOR_BASE_URL,
+		browserBaseURL: '/server',
+		retry: {
+			retries: 3
+		},
+		headers: {
+			common: {
+				Accept: 'application/json',
+			}
+		}
+	},
 
 	// Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
 	vuetify: {
@@ -63,6 +84,6 @@ const config: NuxtConfig = {
 			}
 		}
 	},
-}
+};
 
-export default config
+export default config;

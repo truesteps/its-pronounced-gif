@@ -2,19 +2,30 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
-		"moduleResolution": "node",
-		"lib": [
-			"esnext",
-			"esnext.asynciterable",
-			"dom"
-		],
-		"esModuleInterop": true,
-		"experimentalDecorators": true,
-		"sourceMap": true,
 		"strict": true,
-		"noEmit": true,
+		"strictPropertyInitialization": false,
+		"jsx": "preserve",
+		"importHelpers": true,
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strictFunctionTypes": false,
+		"allowJs": true,
+		"sourceMap": true,
 		"baseUrl": ".",
-		"importsNotUsedAsValues": "preserve",
+		"typeRoots": [
+			"node_modules/vuetify/types",
+			"node_modules/@types"
+		],
+		"types": [
+			"webpack-env",
+			"mocha",
+			"chai",
+			"vuetify",
+			"@types/node",
+			"@nuxt/types"
+		],
 		"paths": {
 			"~/*": [
 				"./*"
@@ -23,11 +34,20 @@
 				"./*"
 			]
 		},
-		"types": [
-			"@types/node",
-			"@nuxt/types"
+		"lib": [
+			"esnext",
+			"dom",
+			"dom.iterable",
+			"scripthost"
 		]
 	},
+	"include": [
+		"./**/*.ts",
+		"./**/*.tsx",
+		"./**/*.vue",
+		"tests/**/*.ts",
+		"tests/**/*.tsx"
+	],
 	"exclude": [
 		"node_modules"
 	]

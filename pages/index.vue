@@ -19,6 +19,12 @@
 
 		head: {
 			title: 'Trends'
+		},
+
+		methods: {
+			async fetchTrendingGifs(): Promise<void> {
+
+			},
 		}
 	};
 </script>

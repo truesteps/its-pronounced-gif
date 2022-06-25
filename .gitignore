@@ -12,3 +12,5 @@ dist
 
 .eslintcache
 .yarn-error*
+
+.env
