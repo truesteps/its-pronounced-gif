@@ -23,7 +23,7 @@ export interface Gif {
 	hasaudio: boolean;
 	id: string;
 	// https://github.com/microsoft/TypeScript/issues/24220
-	media: { [format in GifFormat]: Media };
+	media_formats: { [format in GifFormat]: Media };
 	tags: string[];
 	title: string;
 	content_description: string;

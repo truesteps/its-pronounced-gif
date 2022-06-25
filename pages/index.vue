@@ -9,21 +9,20 @@
 				</v-col>
 			</v-row>
 
-			<v-row>
-				<v-col
-					v-for="loader in loaders"
-					:key="loader"
-					cols="12"
-					sm="6"
-					md="4"
-					lg="3"
-				>
+			<v-row v-if="isLoading">
+				<v-col v-for="loader in loaders" :key="loader" cols="12" sm="6" md="4" lg="3">
 					<v-skeleton-loader
 						class="mx-auto"
 						max-width="300"
 						type="card"
 						elevation="1"
 					/>
+				</v-col>
+			</v-row>
+
+			<v-row v-else>
+				<v-col v-for="trendingGif in trendingGifs" :key="trendingGif.id" cols="12" sm="6" md="4" lg="3">
+					<gif-card :gif="trendingGif" />
 				</v-col>
 			</v-row>
 		</v-col>
@@ -33,8 +32,16 @@
 <script lang="ts">
 	import Vue from 'vue';
 
+	import { ActionType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
+	import { mapActions, mapState } from 'vuex';
+	import GifCard from '~/components/GifCard.vue';
+
 	export default Vue.extend({
 		name: 'PageIndex',
+
+		components: {
+			GifCard
+		},
 
 		head: {
 			title: 'Trends'
@@ -59,13 +66,31 @@
 
 			loaders(): number[] {
 				return Array.apply(null, Array(this.itemsPerRow)).map((item, index) => index);
-			}
+			},
+
+			limit(): number {
+				return (this.itemsPerRow * 3) - 1;
+			},
+
+			...mapState(GifsStoreNamespace, {
+				trendingGifs: (state: GifsState) => state.trendingGifs,
+
+				isLoading: (state: GifsState) => state.isLoading,
+			})
+		},
+
+		created() {
+			this.fetchTrendingGifs({
+				key: this.$config.tenorApiKey,
+				client_key: this.$config.tenorClientKey,
+				limit: this.limit,
+			});
 		},
 
 		methods: {
-			async fetchTrendingGifs(): Promise<void> {
-
-			},
+			...mapActions(GifsStoreNamespace, {
+				fetchTrendingGifs: ActionType.FETCH_TRENDING_GIFS,
+			})
 		}
 	});
 </script>

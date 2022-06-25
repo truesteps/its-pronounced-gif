@@ -54,15 +54,14 @@ const config: NuxtConfig = {
 
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
 	axios: {
-		proxy: true,
 		baseURL: process.env.TENOR_BASE_URL,
-		browserBaseURL: '/server',
 		retry: {
 			retries: 3
 		},
 		headers: {
 			common: {
 				Accept: 'application/json',
+				'Content-Type': 'application/json',
 			}
 		}
 	},
