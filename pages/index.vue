@@ -15,7 +15,7 @@
 					:key="loader"
 					cols="12"
 					sm="6"
-					md="3"
+					md="4"
 					lg="3"
 				>
 					<v-skeleton-loader
@@ -48,6 +48,10 @@
 
 				if (this.$vuetify.breakpoint.sm) {
 					return 2;
+				}
+
+				if (this.$vuetify.breakpoint.md) {
+					return 3;
 				}
 
 				return 4;
