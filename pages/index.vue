@@ -15,7 +15,7 @@
 				</v-col>
 
 				<v-col key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
-					<show-more-gifs />
+					<show-more-gifs @loadMore="load" />
 				</v-col>
 			</v-row>
 
@@ -86,14 +86,18 @@
 		},
 
 		created() {
-			this.fetchTrendingGifs({
-				key: this.$config.tenorApiKey,
-				client_key: this.$config.tenorClientKey,
-				limit: this.limit,
-			});
+			this.load();
 		},
 
 		methods: {
+			async load(): Promise<void> {
+				await this.fetchTrendingGifs({
+					key: this.$config.tenorApiKey,
+					client_key: this.$config.tenorClientKey,
+					limit: this.trendingGifs.length < 1 ? this.limit : this.limit + 1,
+				});
+			},
+
 			...mapActions(GifsStoreNamespace, {
 				fetchTrendingGifs: ActionType.FETCH_TRENDING_GIFS,
 			})

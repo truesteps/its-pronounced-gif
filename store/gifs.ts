@@ -8,19 +8,25 @@ export const Namespace = 'gifs';
 export interface GifsState {
 	isLoading: boolean;
 	trendingGifs: Gif[];
+	nextTrendingGifsPosition: string | null;
 	gifs: Gif[];
+	nextGifsPosition: string | null;
 }
 
 export const state = (): GifsState => ({
 	isLoading: false,
 	trendingGifs: [],
-	gifs: []
+	nextTrendingGifsPosition: null,
+	gifs: [],
+	nextGifsPosition: null,
 });
 
 export const MutationType = {
 	SET_IS_LOADING: 'setIsLoading',
 	SET_TRENDING_GIFS: 'setTrendingGifs',
+	SET_TRENDING_GIFS_NEXT_POSITION: 'setTrendingGifsNextPosition',
 	SET_GIFS: 'setGifs',
+	SET_GIFS_NEXT_POSITION: 'setGifsNextPosition',
 };
 
 export const mutations: MutationTree<GifsState> = {
@@ -29,11 +35,27 @@ export const mutations: MutationTree<GifsState> = {
 	},
 
 	[MutationType.SET_TRENDING_GIFS]: (state, newTrendingGifs: Gif[]) => {
-		state.trendingGifs = newTrendingGifs;
+		if (state.nextTrendingGifsPosition !== null) {
+			state.trendingGifs = [...state.trendingGifs, ...newTrendingGifs];
+		} else {
+			state.trendingGifs = newTrendingGifs;
+		}
+	},
+
+	[MutationType.SET_TRENDING_GIFS_NEXT_POSITION]: (state, nextPosition: string | null) => {
+		state.nextTrendingGifsPosition = nextPosition;
+	},
+
+	[MutationType.SET_GIFS_NEXT_POSITION]: (state, nextPosition: string | null) => {
+		state.nextGifsPosition = nextPosition;
 	},
 
 	[MutationType.SET_GIFS]: (state, newGifs: Gif[]) => {
-		state.gifs = newGifs;
+		if (state.nextGifsPosition !== null) {
+			state.gifs = [...state.gifs, ...newGifs];
+		} else {
+			state.gifs = newGifs;
+		}
 	},
 };
 
@@ -46,8 +68,12 @@ export const actions: ActionTree<GifsState, RootState> = {
 	async [ActionType.FETCH_TRENDING_GIFS]({ commit, state }, params) {
 		commit(MutationType.SET_IS_LOADING, true);
 
+		if (state.nextTrendingGifsPosition) {
+			params.pos = state.nextTrendingGifsPosition;
+		}
+
 		// extract results from response, corresponds to Gif[]
-		const { results } = await this.$axios.$get('/featured', {
+		const { results, next } = await this.$axios.$get('/featured', {
 			params: {
 				limit: 10,
 				...params
@@ -55,6 +81,7 @@ export const actions: ActionTree<GifsState, RootState> = {
 		});
 
 		commit(MutationType.SET_TRENDING_GIFS, results);
+		commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, next);
 		commit(MutationType.SET_IS_LOADING, false);
 	},
 
