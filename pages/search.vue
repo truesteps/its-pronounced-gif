@@ -82,8 +82,7 @@
 				// ToDo: merge common functionality from index page and search page into a mixin
 			},
 
-			// @ts-ignore
-			debouncedFetchGifs: debounce(this.fetchGifs, this.debounceTimeMs),
+			//debouncedFetchGifs: debounce(this.fetchGifs, this.debounceTimeMs),
 		}
 	});
 </script>

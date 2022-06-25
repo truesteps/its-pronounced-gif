@@ -4,11 +4,7 @@
 	"version": "1.0.69",
 	"private": true,
 	"dependencies": {
-		"@nuxtjs/axios": "^5.13.6",
-		"dotenv": "^16.0.1",
-		"nuxt": "2.15.8",
-		"nuxt-clipboard": "^0.0.7",
-		"ts-debounce": "^4.0.0"
+		"nuxt": "2.15.8"
 	},
 	"scripts": {
 		"dev": "nuxt",
@@ -24,6 +20,10 @@
 		"@nuxtjs/eslint-config-typescript": "10.0.0",
 		"@nuxtjs/eslint-module": "^3.1.0",
 		"@nuxtjs/vuetify": "^1.12.3",
+		"@nuxtjs/axios": "^5.13.6",
+		"dotenv": "^16.0.1",
+		"nuxt-clipboard": "^0.0.7",
+		"ts-debounce": "^4.0.0",
 		"@vue/eslint-config-typescript": "^11.0.0",
 		"eslint": "8.15.0",
 		"eslint-config-airbnb-base": "^15.0.0",
