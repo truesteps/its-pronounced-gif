@@ -5,6 +5,8 @@ require('dotenv').config({ path: '.env' });
 const config: NuxtConfig = {
 	ssr: false,
 
+	target: 'static',
+
 	build: {},
 
 	buildModules: [
