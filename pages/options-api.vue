@@ -44,12 +44,12 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue'
-	import type { MetaInfo } from 'vue-meta'
-	import { mapActions, mapState } from 'vuex'
+	import Vue from 'vue';
+	import type { MetaInfo } from 'vue-meta';
+	import { mapActions, mapState } from 'vuex';
 
-	import type { RootState } from '~/store'
-	import { actionType, namespace as settingStoreNamespace, SettingState } from '~/store/setting'
+	import type { RootState } from '~/store';
+	import { actionType, namespace as settingStoreNamespace, SettingState } from '~/store/setting';
 
 	interface ToDo {
 		userId: number
@@ -62,49 +62,49 @@
 		fetchOnServer: false,
 		middleware: 'user-agent',
 
-		asyncData (context) {
+		asyncData(context) {
 			return {
 				asyncMessage: 'I\'m defined on asyncData()',
 				userAgent: context.userAgent
-			}
+			};
 		},
 
-		data () {
+		data() {
 			return {
 				message: 'I\'m defined on data()',
 				fetchedTodos: [] as ToDo[]
-			}
+			};
 		},
 
-		fetch () {
+		fetch() {
 			return fetch('https://jsonplaceholder.typicode.com/todos')
-				.then(response => response.json())
+				.then((response) => response.json())
 				.then((data: ToDo[]) => {
-					this.fetchedTodos = data
-				})
+					this.fetchedTodos = data;
+				});
 		},
 
-		head (): MetaInfo {
+		head(): MetaInfo {
 			return {
 				title: 'Options API Demo',
 				meta: [{
 					name: 'message',
 					content: this.computedMessage
 				}]
-			}
+			};
 		},
 
 		computed: {
-			computedMessage (): string {
-				return this.message.replace('data()', 'computed()')
+			computedMessage(): string {
+				return this.message.replace('data()', 'computed()');
 			},
 
 			...mapState({
-				descriptionOnStore: state => (state as RootState).description
+				descriptionOnStore: (state) => (state as RootState).description
 			}),
 
 			...mapState(settingStoreNamespace, {
-				isDarkMode: state => (state as SettingState).darkMode
+				isDarkMode: (state) => (state as SettingState).darkMode
 			})
 		},
 
@@ -113,5 +113,5 @@
 				toggleDarkMode: actionType.TOGGLE_DARK_MODE
 			})
 		}
-	})
+	});
 </script>

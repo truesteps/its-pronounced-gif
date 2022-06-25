@@ -18,7 +18,8 @@ const config: NuxtConfig = {
 	env: {},
 
 	head: {
-		title: 'nuxt-community/typescript-template',
+		titleTemplate: '%s - It\'s pronounced /dʒɪf/',
+		title: 'It\'s pronounced /dʒɪf/',
 		meta: [
 			{ charset: 'utf-8' },
 			{
@@ -36,7 +37,10 @@ const config: NuxtConfig = {
 
 	loading: { color: '#0c64c1' },
 
-	modules: [],
+	modules: [
+		// https://go.nuxtjs.dev/axios
+		'@nuxtjs/axios'
+	],
 
 	plugins: [
 		'~/plugins/truncate'

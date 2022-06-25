@@ -15,6 +15,10 @@
 
 <script lang="ts">
 	export default {
-		name: 'PageIndex'
-	}
+		name: 'PageIndex',
+
+		head: {
+			title: 'Trends'
+		}
+	};
 </script>
