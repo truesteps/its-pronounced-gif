@@ -40,12 +40,13 @@
 		watch: {
 			search: {
 				handler(newValue: string, oldValue: string) {
+					// if the search query didn't change, we skip handler
 					if (newValue === oldValue) {
 						return;
 					}
 
+					// in case the search term is too short, we clear the URL query and skip handler
 					if (newValue.length < this.searchTermLengthThreshold) {
-						// clear route query
 						this.$router.push({
 							query: {
 								search: undefined,
@@ -55,7 +56,7 @@
 						return;
 					}
 
-					// set route query
+					// in case all validation passes, we update the URL and fetch gifs
 					this.$router.push({
 						query: { search: newValue },
 					});
