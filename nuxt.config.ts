@@ -84,9 +84,6 @@ const config: NuxtConfig = {
 	// Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
 	vuetify: {
 		treeShake: process.env.APP_ENV !== 'development',
-		lang: {
-			current: 'cs'
-		},
 		theme: {
 			themes: {
 				light: {
