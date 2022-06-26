@@ -11,7 +11,9 @@
 					v-for="item in items"
 					:key="item.label"
 					:to="item.to"
+					:class="item.class"
 					link
+					nuxt
 				>
 					<v-list-item-icon>
 						<v-icon>{{ item.icon }}</v-icon>
@@ -27,10 +29,10 @@
 		</v-navigation-drawer>
 
 		<v-app-bar app>
-			<v-app-bar-nav-icon @click="toggleNavbar" />
+			<v-app-bar-nav-icon class="hamburger-menu-button" @click="toggleNavbar" />
 
 			<v-toolbar-title>
-				<v-list-item @click="$router.push('/')">
+				<v-list-item class="logo" @click="$router.push('/')">
 					<v-list-item-title>
 						<div class="text-h6">
 							It's pronounced /dʒɪf/
@@ -55,6 +57,7 @@
 		label: string;
 		icon: string;
 		to: string;
+		class: string;
 	}
 
 	export default Vue.extend({
@@ -68,12 +71,14 @@
 					{
 						label: 'Trends',
 						to: '/',
-						icon: 'mdi-trending-up'
+						icon: 'mdi-trending-up',
+						class: 'link-to-trends',
 					},
 					{
 						label: 'Search',
 						to: '/search',
-						icon: 'mdi-magnify'
+						icon: 'mdi-magnify',
+						class: 'link-to-search',
 					}
 				] as MenuItem[]
 			};
