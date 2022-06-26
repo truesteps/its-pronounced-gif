@@ -18,6 +18,7 @@
 					<v-text-field
 						v-model="search"
 						label="Type to search..."
+						class="search-input"
 						clearable
 						autofocus
 					/>

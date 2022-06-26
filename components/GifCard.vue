@@ -70,7 +70,7 @@
 					this.isOverlayVisible = false;
 				}, this.overlayTimeout);
 
-				await navigator.clipboard.writeText(this.gif.url);
+				await window.navigator.clipboard.writeText(this.gif.url);
 			},
 		},
 	});
