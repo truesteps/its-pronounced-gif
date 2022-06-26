@@ -6,7 +6,7 @@
 
 		data() {
 			return {
-				numberOfRows: 4 as number,
+				numberOfRows: 3 as number,
 			};
 		},
 

@@ -75,6 +75,7 @@
 				await this.fetchTrendingGifs({
 					key: this.$config.tenorApiKey,
 					client_key: this.$config.tenorClientKey,
+					// if we're loading the first batch of gifs, subtract 1 from the limit to show the "load more" button
 					limit: this.trendingGifs.length < 1 ? this.limit : this.limit + 1,
 				});
 			},

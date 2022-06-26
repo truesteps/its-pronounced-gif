@@ -1,7 +1,7 @@
 import { Gif } from '~/types/gifs';
 import { ActionTree, MutationTree } from 'vuex';
 import { RootState } from '~/store/index';
-import { Context } from '@nuxt/types';
+import { CancelTokenSource } from 'axios';
 
 export const Namespace = 'gifs';
 
@@ -11,6 +11,7 @@ export interface GifsState {
 	trendingGifsNextPosition: string | null;
 	gifs: Gif[];
 	gifsNextPosition: string | null;
+	cancelTokenSource: CancelTokenSource | null;
 }
 
 export const state = (): GifsState => ({
@@ -19,6 +20,7 @@ export const state = (): GifsState => ({
 	trendingGifsNextPosition: null,
 	gifs: [],
 	gifsNextPosition: null,
+	cancelTokenSource: null,
 });
 
 export const MutationType = {
@@ -29,6 +31,7 @@ export const MutationType = {
 	SET_GIFS: 'setGifs',
 	SET_GIFS_NEXT_POSITION: 'setGifsNextPosition',
 	RESET_GIFS: 'resetGifs',
+	SET_CANCEL_TOKEN_SOURCE: 'setCancelTokenSource',
 };
 
 export const mutations: MutationTree<GifsState> = {
@@ -51,6 +54,7 @@ export const mutations: MutationTree<GifsState> = {
 	[MutationType.RESET_TRENDING_GIFS]: (state) => {
 		state.trendingGifs = [];
 		state.trendingGifsNextPosition = null;
+		state.cancelTokenSource = null;
 	},
 
 	[MutationType.SET_GIFS]: (state, newGifs: Gif[]) => {
@@ -68,6 +72,11 @@ export const mutations: MutationTree<GifsState> = {
 	[MutationType.RESET_GIFS]: (state) => {
 		state.gifs = [];
 		state.gifsNextPosition = null;
+		state.cancelTokenSource = null;
+	},
+
+	[MutationType.SET_CANCEL_TOKEN_SOURCE]: (state, cancelTokenSource: CancelTokenSource | null) => {
+		state.cancelTokenSource = cancelTokenSource;
 	}
 };
 
@@ -77,26 +86,89 @@ export const ActionType = {
 };
 
 export const actions: ActionTree<GifsState, RootState> = {
-	async [ActionType.FETCH_TRENDING_GIFS]({ commit, state }, params) {
+	async [ActionType.FETCH_TRENDING_GIFS]({ commit, state }, params: any) {
 		commit(MutationType.SET_IS_LOADING, true);
 
 		if (state.trendingGifsNextPosition) {
 			params.pos = state.trendingGifsNextPosition;
 		}
 
-		// extract results from response, corresponds to Gif[]
-		const { results, next } = await this.$axios.$get('/featured', {
-			params: {
-				limit: 10,
-				...params
-			},
-		});
+		try {
+			// if previous request running, cancel it
+			if (state.cancelTokenSource) {
+				state.cancelTokenSource.cancel();
+			}
 
-		commit(MutationType.SET_TRENDING_GIFS, results);
-		commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, next);
+			const cancelTokenSource = this.$axios.CancelToken.source();
+
+			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, cancelTokenSource);
+
+			// extract results from response, corresponds to Gif[]
+			const { results, next } = await this.$axios.$get('/featured', {
+				cancelToken: cancelTokenSource.token,
+				params: {
+					limit: 10,
+					media_filter: 'gif',
+					...params
+				},
+			});
+
+			commit(MutationType.SET_TRENDING_GIFS, results);
+			commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, next);
+			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, null);
+		} catch (error) {
+			if (this.$axios.isCancel(error)) {
+				console.log('Request canceled', error);
+				return;
+			}
+
+			alert('Oops! Something went wrong. Please try again later.');
+			console.error(error);
+		}
+
 		commit(MutationType.SET_IS_LOADING, false);
 	},
 
-	[ActionType.FETCH_GIFS]({ commit, state }, _context: Context) {
+	async [ActionType.FETCH_GIFS]({ commit, state }, params: any) {
+		commit(MutationType.SET_IS_LOADING, true);
+
+		if (state.gifsNextPosition) {
+			params.pos = state.gifsNextPosition;
+		}
+
+		try {
+			// if previous request running, cancel it
+			if (state.cancelTokenSource) {
+				state.cancelTokenSource.cancel();
+			}
+
+			const cancelTokenSource = this.$axios.CancelToken.source();
+
+			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, cancelTokenSource);
+
+			// extract results from response, corresponds to Gif[]
+			const { results, next } = await this.$axios.$get('/search', {
+				cancelToken: cancelTokenSource.token,
+				params: {
+					limit: 10,
+					media_filter: 'gif',
+					...params
+				},
+			});
+
+			commit(MutationType.SET_GIFS, results);
+			commit(MutationType.SET_GIFS_NEXT_POSITION, next);
+			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, null);
+		} catch (error) {
+			if (this.$axios.isCancel(error)) {
+				console.log('Request canceled', error);
+				return;
+			}
+
+			alert('Oops! Something went wrong. Please try again later.');
+			console.error(error);
+		}
+
+		commit(MutationType.SET_IS_LOADING, false);
 	}
 };
