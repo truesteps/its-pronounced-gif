@@ -121,7 +121,7 @@
 						return;
 					}
 
-					this.pushToQueryWithDebounce({ search: value });
+					this.pushToQueryWithDebounce({ search: encodeURIComponent(value) });
 				}
 			},
 
@@ -195,7 +195,7 @@
 			}, debounceTimeMs),
 
 			pushToQuery(query: SearchQuery): void {
-				this.$router.push({ query });
+				this.$router.push({ query: { search: query.search } });
 			},
 
 			pushToQueryWithDebounce: debounce(function (this: any, query: SearchQuery): void {
