@@ -24,7 +24,7 @@
 			{{ $truncate(gif.content_description) }}
 		</v-card-text>
 
-		<v-overlay v-model="isOverlayVisible" absolute dark opacity="1">
+		<v-overlay v-model="isOverlayVisible" absolute dark opacity="1" class="darker-overlay">
 			<div class="text-center">
 				<v-icon color="green" large>mdi-check</v-icon>
 			</div>
@@ -75,3 +75,9 @@
 		},
 	});
 </script>
+
+<style lang="scss" scoped>
+	.darker-overlay.v-overlay--active {
+		opacity: 0.9;
+	}
+</style>
