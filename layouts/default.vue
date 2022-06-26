@@ -29,10 +29,14 @@
 		<v-app-bar app>
 			<v-app-bar-nav-icon @click="toggleNavbar" />
 
-			<v-toolbar-title @click="$router.push('/')">
-				<div class="text-h6">
-					It's pronounced /dʒɪf/
-				</div>
+			<v-toolbar-title>
+				<v-list-item @click="$router.push('/')">
+					<v-list-item-title>
+						<div class="text-h6">
+							It's pronounced /dʒɪf/
+						</div>
+					</v-list-item-title>
+				</v-list-item>
 			</v-toolbar-title>
 		</v-app-bar>
 
