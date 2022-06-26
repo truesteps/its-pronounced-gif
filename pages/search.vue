@@ -30,7 +30,7 @@
 				</v-col>
 
 				<v-col v-if="gifs.length > 0" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
-					<show-more-gifs @loadMore="load(false)" />
+					<load-more-gifs @loadMore="load(false)" />
 				</v-col>
 			</v-row>
 
@@ -72,7 +72,7 @@
 	import GridMixin from '~/mixins/GridMixin.vue';
 	import { mapActions, mapMutations, mapState } from 'vuex';
 	import GifCard from '~/components/GifCard.vue';
-	import ShowMoreGifs from '~/components/ShowMoreGifs.vue';
+	import LoadMoreGifs from '~/components/LoadMoreGifs.vue';
 
 	const debounceTimeMs: number = 200;
 
@@ -80,7 +80,7 @@
 		name: 'SearchPage',
 
 		components: {
-			ShowMoreGifs,
+			LoadMoreGifs,
 			GifCard
 		},
 

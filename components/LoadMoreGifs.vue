@@ -29,7 +29,7 @@
 	import GifCardMixin from '~/mixins/GifCardMixin.vue';
 
 	export default GifCardMixin.extend({
-		name: 'ShowMoreGifs',
+		name: 'LoadMoreGifs',
 	});
 </script>
 

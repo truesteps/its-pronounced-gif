@@ -19,7 +19,7 @@
 				</v-col>
 
 				<v-col key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
-					<show-more-gifs @loadMore="load" />
+					<load-more-gifs @loadMore="load" />
 				</v-col>
 			</v-row>
 
@@ -42,7 +42,7 @@
 
 	import { ActionType, MutationType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
 	import GifCard from '~/components/GifCard.vue';
-	import ShowMoreGifs from '~/components/ShowMoreGifs.vue';
+	import LoadMoreGifs from '~/components/LoadMoreGifs.vue';
 
 	import GridMixin from '~/mixins/GridMixin.vue';
 
@@ -50,7 +50,7 @@
 		name: 'PageIndex',
 
 		components: {
-			ShowMoreGifs,
+			LoadMoreGifs,
 			GifCard
 		},
 
