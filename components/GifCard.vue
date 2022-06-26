@@ -1,5 +1,11 @@
 <template>
-	<v-card :disabled="isOverlayVisible" @click="copyToClipboard">
+	<v-card
+		:disabled="isOverlayVisible"
+		:elevation="isHovering ? 12 : 2"
+		@click="copyToClipboard"
+		@mouseenter="isHovering = true"
+		@mouseleave="isHovering = false"
+	>
 		<v-img height="200px" class="grey darken-4" contain :src="gif.media_formats.gif.url">
 			<template #placeholder>
 				<v-row
@@ -42,6 +48,7 @@
 		data() {
 			return {
 				isOverlayVisible: false as boolean,
+				isHovering: false as boolean,
 
 				overlayTimeout: 2000 as number,
 			};
