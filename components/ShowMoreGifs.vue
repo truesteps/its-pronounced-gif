@@ -1,6 +1,6 @@
 <template>
 	<v-card
-		min-height="260"
+		min-height="254"
 		class="h-100"
 		:elevation="elevation"
 		@click="$emit('loadMore')"
