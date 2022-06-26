@@ -30,7 +30,7 @@
 				</v-col>
 
 				<v-col v-if="gifs.length > 0" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
-					<load-more-gifs @loadMore="load(false)" />
+					<load-more-gifs @loadMore="load(false, $event)" />
 				</v-col>
 			</v-row>
 
@@ -161,24 +161,30 @@
 		},
 
 		methods: {
-			async load(resetGifs: boolean = false): Promise<void> {
-				// do something in the future
-
+			async load(resetGifs: boolean = false, loadMoreEvent?: { weAreBurningBoys: boolean; } | undefined): Promise<void> {
 				if (resetGifs) {
 					this.resetGifs();
+				}
+
+				// if we're loading the first batch of gifs, subtract 1 from the limit to show the "load more" button
+				let limit = this.gifs.length < 1 ? this.limit : this.limit + 1;
+
+				// if we're entering burning CORPSES WITH THE AMOUNT OF GIFS THAT CAME FROM THE UNDERWORLD mode
+				// let's DOUBLE the limit, yes, you heard me, DOBULE IT!
+				if (loadMoreEvent && loadMoreEvent.weAreBurningBoys) {
+					limit *= 2;
 				}
 
 				await this.fetchGifs({
 					key: this.$config.tenorApiKey,
 					client_key: this.$config.tenorClientKey,
-					// if we're loading the first batch of gifs, subtract 1 from the limit to show the "load more" button
-					limit: this.gifs.length < 1 ? this.limit : this.limit + 1,
 					q: this.search,
+					limit,
 				});
 			},
 
-			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false) {
-				this.load(resetGifs);
+			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false, loadMoreEvent?: { weAreBurningBoys: boolean; } | undefined): void {
+				this.load(resetGifs, loadMoreEvent);
 			}, debounceTimeMs),
 
 			clearSearch(event: Event): void {

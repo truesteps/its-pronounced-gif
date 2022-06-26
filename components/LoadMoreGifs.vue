@@ -3,22 +3,29 @@
 		min-height="254"
 		class="h-100"
 		:elevation="elevation"
-		@click="$emit('loadMore')"
+		@click="loadMoreGifs"
 		@mouseenter="setIsHovering(true)"
 		@mouseleave="setIsHovering(false)"
 	>
-		<v-card-text class="h-100">
+		<v-card-text class="h-100" :style="style">
 			<v-row
 				class="fill-height ma-0"
 				align="center"
 				justify="center"
 			>
 				<div class="load-text text-h6">
-					<v-icon x-large>mdi-plus</v-icon>
+					<v-icon
+						x-large
+						:color="isOverBurningClicksThreshold ? 'white' : 'gray'"
+					>
+						mdi-plus
+					</v-icon>
 
 					<br />
 
-					Load more GIFs
+					<span :class="{'white--text': isOverBurningClicksThreshold}">
+						{{ label }}
+					</span>
 				</div>
 			</v-row>
 		</v-card-text>
@@ -30,6 +37,42 @@
 
 	export default GifCardMixin.extend({
 		name: 'LoadMoreGifs',
+
+		data() {
+			return {
+				clicksCount: 0 as number,
+				burningClicksThreshold: 2 as number,
+				burningImageSrc: 'https://c.tenor.com/Pd0Kna5m45cAAAAC/skeleton-burning.gif' as string,
+			};
+		},
+
+		computed: {
+			isOverBurningClicksThreshold(): boolean {
+				return this.clicksCount > this.burningClicksThreshold;
+			},
+
+			label(): string {
+				return this.isOverBurningClicksThreshold ? 'Load MORE FUCKING GIFs' : 'Load more GIFs';
+			},
+
+			style(): string {
+				if (!this.isOverBurningClicksThreshold) {
+					return '';
+				}
+
+				return `background-image: url('${this.burningImageSrc}'); background-position: cover`;
+			},
+		},
+
+		methods: {
+			loadMoreGifs(): void {
+				this.clicksCount++;
+
+				this.$emit('loadMore', {
+					weAreBurningBoys: this.isOverBurningClicksThreshold,
+				});
+			},
+		},
 	});
 </script>
 
