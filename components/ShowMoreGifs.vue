@@ -1,5 +1,12 @@
 <template>
-	<v-card class="h-100" @click="$emit('loadMore')">
+	<v-card
+		min-height="260"
+		class="h-100"
+		:elevation="elevation"
+		@click="$emit('loadMore')"
+		@mouseenter="setIsHovering(true)"
+		@mouseleave="setIsHovering(false)"
+	>
 		<v-card-text class="h-100">
 			<v-row
 				class="fill-height ma-0"
@@ -19,9 +26,9 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+	import GifCardMixin from '~/mixins/GifCardMixin.vue';
 
-	export default Vue.extend({
+	export default GifCardMixin.extend({
 		name: 'ShowMoreGifs',
 	});
 </script>

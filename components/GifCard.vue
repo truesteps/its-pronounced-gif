@@ -1,10 +1,10 @@
 <template>
 	<v-card
 		:disabled="isOverlayVisible"
-		:elevation="isHovering ? 12 : 2"
+		:elevation="elevation"
 		@click="copyToClipboard"
-		@mouseenter="isHovering = true"
-		@mouseleave="isHovering = false"
+		@mouseenter="setIsHovering(true)"
+		@mouseleave="setIsHovering(false)"
 	>
 		<v-img height="200px" class="grey darken-4" contain :src="gif.media_formats.gif.url">
 			<template #placeholder>
@@ -35,10 +35,13 @@
 </template>
 
 <script lang="ts">
-	import Vue, { PropType } from 'vue';
+	import { PropType } from 'vue';
+
+	import GifCardMixin from '~/mixins/GifCardMixin.vue';
+
 	import { Gif } from '~/types/gifs';
 
-	export default Vue.extend({
+	export default GifCardMixin.extend({
 		name: 'GifCard',
 
 		props: {
@@ -48,7 +51,6 @@
 		data() {
 			return {
 				isOverlayVisible: false as boolean,
-				isHovering: false as boolean,
 
 				overlayTimeout: 2000 as number,
 			};
