@@ -109,7 +109,7 @@ describe('Search Page', () => {
 			.type('midsummer');
 
 		cy.url()
-			.should('contain', '?search=midsummer');
+			.should('contain', `?search=${encodeURIComponent('midsummer')}`);
 	});
 
 	it('should remove the search term from url if I go back in history', () => {
@@ -129,7 +129,7 @@ describe('Search Page', () => {
 			.type('midsummer');
 
 		cy.url()
-			.should('contain', '?search=midsummer');
+			.should('contain', `?search=${encodeURIComponent('midsummer')}`);
 
 		cy.go('back');
 

@@ -110,10 +110,14 @@
 			search: {
 				get(): string | null {
 					if (!Array.isArray(this.$route.query.search)) {
-						return decodeURIComponent(this.$route.query.search) || null;
+						const searchTerm = this.$route.query.search;
+
+						return searchTerm ? decodeURIComponent(searchTerm) : searchTerm;
 					}
 
-					return decodeURIComponent(this.$route.query.search[0] || '') || null;
+					const searchTerm = this.$route.query.search[0] || null;
+
+					return searchTerm ? decodeURIComponent(searchTerm) : null;
 				},
 				set(value: string | null): void {
 					if (!value) {
