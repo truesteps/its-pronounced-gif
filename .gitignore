@@ -14,3 +14,7 @@ dist
 .yarn-error*
 
 .env
+
+# Cypress videos and screenshots
+/cypress/screenshots
+/cypress/videos
