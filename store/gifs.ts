@@ -117,6 +117,13 @@ export const actions: ActionTree<GifsState, RootState> = {
 			params.pos = state.gifsNextPosition;
 		}
 
+		// if someone enables super fast speed and try to be all funny guy, we don't want the app to break
+		if (!params.q || params.q.length < 3) {
+			console.log('[gifs.ts] Request skipped, empty query.');
+			commit(MutationType.SET_IS_LOADING, false);
+			return;
+		}
+
 		try {
 			// extract results from response, corresponds to Gif[]
 			const { results, next } = await this.$axios.$get('/search', {

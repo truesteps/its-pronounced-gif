@@ -70,7 +70,7 @@
 
 				this.$emit('loadMore', {
 					shouldLoadDouble: this.isOverBurningClicksThreshold,
-				});
+				} as LoadMoreGifsEvent);
 			},
 		},
 	});

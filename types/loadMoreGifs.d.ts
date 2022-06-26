@@ -1,0 +1,3 @@
+interface LoadMoreGifsEvent {
+	shouldLoadDouble: boolean;
+}

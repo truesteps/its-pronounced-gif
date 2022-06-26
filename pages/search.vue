@@ -67,15 +67,19 @@
 
 <script lang="ts">
 	import { debounce } from 'ts-debounce';
+	import { mapActions, mapMutations, mapState } from 'vuex';
 
 	import { ActionType, MutationType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
 
 	import GridMixin from '~/mixins/GridMixin.vue';
-	import { mapActions, mapMutations, mapState } from 'vuex';
 	import GifCard from '~/components/GifCard.vue';
 	import LoadMoreGifs from '~/components/LoadMoreGifs.vue';
 
 	const debounceTimeMs: number = 200;
+
+	interface SearchQuery {
+		search?: string | null;
+	}
 
 	export default GridMixin.extend({
 		name: 'SearchPage',
@@ -87,7 +91,6 @@
 
 		data() {
 			return {
-				search: '' as string | null,
 				searchTermLengthThreshold: 3 as number,
 				typingGifs: [
 					'https://c.tenor.com/KkerOljBwakAAAAd/computer-nerd.gif',
@@ -104,6 +107,24 @@
 		},
 
 		computed: {
+			search: {
+				get(): string | null {
+					if (!Array.isArray(this.$route.query.search)) {
+						return this.$route.query.search || null;
+					}
+
+					return this.$route.query.search[0] || null;
+				},
+				set(value: string | null): void {
+					if (!value) {
+						this.pushToQueryWithDebounce({ search: undefined });
+						return;
+					}
+
+					this.pushToQueryWithDebounce({ search: value });
+				}
+			},
+
 			hasValidSearchTerm(): boolean {
 				return (this.search || '').length >= this.searchTermLengthThreshold;
 			},
@@ -123,26 +144,15 @@
 			search: {
 				handler(newValue: string | null, oldValue: string | null) {
 					// if the search query didn't change, we skip handler
-					if (newValue === oldValue) {
+					if (
+						newValue === oldValue
+						// in case the search term is too short, we clear the URL query and skip handler
+						|| !this.hasValidSearchTerm
+					) {
 						return;
 					}
 
-					// in case the search term is too short, we clear the URL query and skip handler
-					if ((newValue || '').length < this.searchTermLengthThreshold) {
-						this.$router.push({
-							query: {
-								search: undefined,
-							},
-						});
-
-						return;
-					}
-
-					// in case all validation passes, we update the URL and fetch gifs
-					this.$router.push({
-						query: { search: newValue },
-					});
-
+					// in case all validation passes, we fetch gifs
 					this.loadWithDebounce(true);
 				},
 				immediate: true,
@@ -151,10 +161,6 @@
 
 		created() {
 			this.typingGifsRandomizer = this.$helpers.getRandomInt(0, this.typingGifs.length - 1);
-
-			if (this.$route.query.search) {
-				this.search = this.$route.query.search as string;
-			}
 		},
 
 		beforeDestroy() {
@@ -162,7 +168,7 @@
 		},
 
 		methods: {
-			async load(resetGifs: boolean = false, loadMoreEvent?: { shouldLoadDouble: boolean; } | undefined): Promise<void> {
+			async load(resetGifs: boolean = false, loadMoreEvent?: LoadMoreGifsEvent | undefined): Promise<void> {
 				if (resetGifs) {
 					this.resetGifs();
 				}
@@ -184,16 +190,17 @@
 				});
 			},
 
-			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false, loadMoreEvent?: { weAreBurningBoys: boolean; } | undefined): void {
+			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false, loadMoreEvent?: LoadMoreGifsEvent | undefined): void {
 				this.load(resetGifs, loadMoreEvent);
 			}, debounceTimeMs),
 
-			clearSearch(event: Event): void {
-				event.preventDefault();
-				event.stopPropagation();
-
-				this.search = '';
+			pushToQuery(query: SearchQuery): void {
+				this.$router.push({ query });
 			},
+
+			pushToQueryWithDebounce: debounce(function (this: any, query: SearchQuery): void {
+				this.pushToQuery(query);
+			}, debounceTimeMs),
 
 			...mapActions(GifsStoreNamespace, {
 				fetchGifs: ActionType.FETCH_GIFS,

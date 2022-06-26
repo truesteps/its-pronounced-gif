@@ -75,7 +75,7 @@
 		},
 
 		methods: {
-			async load(loadMoreEvent?: { shouldLoadDouble: boolean; } | undefined): Promise<void> {
+			async load(loadMoreEvent?: LoadMoreGifsEvent | undefined): Promise<void> {
 				// if we're loading the first batch of gifs, subtract 1 from the limit to show the "load more" button
 				let limit = this.trendingGifs.length < 1 ? this.limit : this.limit + 1;
 

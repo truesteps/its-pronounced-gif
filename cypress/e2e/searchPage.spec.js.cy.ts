@@ -91,4 +91,49 @@ describe('Search Page', () => {
 		cy.get('.search-input input')
 			.should('have.value', '');
 	});
+
+	it('should pass the search term into url', () => {
+		cy.visit('/search');
+
+		cy.contains('Search GIFs');
+
+		cy.get('.search-input')
+			.children()
+			.then(($children: JQuery<HTMLElement>) => {
+				const $inputChild = $children.find('input');
+
+				expect($inputChild.is(':focus')).to.be.true;
+			});
+
+		cy.get('.search-input')
+			.type('midsummer');
+
+		cy.url()
+			.should('contain', '?search=midsummer');
+	});
+
+	it('should remove the search term from url if I go back in history', () => {
+		cy.visit('/search');
+
+		cy.contains('Search GIFs');
+
+		cy.get('.search-input')
+			.children()
+			.then(($children: JQuery<HTMLElement>) => {
+				const $inputChild = $children.find('input');
+
+				expect($inputChild.is(':focus')).to.be.true;
+			});
+
+		cy.get('.search-input')
+			.type('midsummer');
+
+		cy.url()
+			.should('contain', '?search=midsummer');
+
+		cy.go('back');
+
+		cy.url()
+			.should('not.contain', '?search=midsummer');
+	});
 });
