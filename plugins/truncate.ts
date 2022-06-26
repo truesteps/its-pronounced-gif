@@ -1,6 +1,6 @@
 import type { Plugin } from '@nuxt/types';
 
-type Truncater = (text: string, maxLength: number) => string
+type Truncater = (text: string, maxLength?: number) => string
 
 declare module 'vue/types/vue' {
 	interface Vue {
