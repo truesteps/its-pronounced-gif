@@ -10,7 +10,7 @@
 		"dev": "nuxt",
 		"build": "nuxt build",
 		"start": "nuxt start",
-		"generate": "APP_ENV=production nuxt generate",
+		"generate": "nuxt generate",
 		"lint": "eslint --max-warnings 0 --ext .ts,.vue ."
 	},
 	"devDependencies": {
