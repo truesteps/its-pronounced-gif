@@ -1,7 +1,9 @@
 <template>
 	<v-card
+		class="gif-card "
 		:disabled="isOverlayVisible"
 		:elevation="elevation"
+		:data-test-url="gif.url"
 		@click="copyToClipboard"
 		@mouseenter="setIsHovering(true)"
 		@mouseleave="setIsHovering(false)"
@@ -68,7 +70,7 @@
 					this.isOverlayVisible = false;
 				}, this.overlayTimeout);
 
-				await this.$copyText(this.gif.url);
+				await navigator.clipboard.writeText(this.gif.url);
 			},
 		},
 	});

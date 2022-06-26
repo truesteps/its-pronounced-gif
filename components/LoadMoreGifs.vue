@@ -1,7 +1,7 @@
 <template>
 	<v-card
 		min-height="254"
-		class="h-100"
+		class="h-100 load-more-gifs"
 		:elevation="elevation"
 		@click="loadMoreGifs"
 		@mouseenter="setIsHovering(true)"
