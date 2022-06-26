@@ -53,8 +53,7 @@ describe('Search Page', () => {
 				expect($inputChild.is(':focus')).to.be.true;
 			});
 
-		cy
-			.get('.search-input')
+		cy.get('.search-input')
 			.type('pingu');
 
 		cy.get('.gif-card')
@@ -68,5 +67,28 @@ describe('Search Page', () => {
 				cy.get('.gif-card')
 					.should('have.length.of.at.least', $length + 1);
 			});
+	});
+
+	it('should be able to clear search input by clicking on the clearable icon', () => {
+		cy.visit('/search');
+
+		cy.contains('Search GIFs');
+
+		cy.get('.search-input')
+			.children()
+			.then(($children: JQuery<HTMLElement>) => {
+				const $inputChild = $children.find('input');
+
+				expect($inputChild.is(':focus')).to.be.true;
+			});
+
+		cy.get('.search-input')
+			.type('midsummer');
+
+		cy.get('.search-input button')
+			.click();
+
+		cy.get('.search-input input')
+			.should('have.value', '');
 	});
 });
