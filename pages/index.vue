@@ -34,14 +34,15 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
 	import { mapActions, mapMutations, mapState } from 'vuex';
 
 	import { ActionType, MutationType, Namespace as GifsStoreNamespace, GifsState } from '~/store/gifs';
 	import GifCard from '~/components/GifCard.vue';
 	import ShowMoreGifs from '~/components/ShowMoreGifs.vue';
 
-	export default Vue.extend({
+	import GridMixin from '~/mixins/GridMixin.vue';
+
+	export default GridMixin.extend({
 		name: 'PageIndex',
 
 		components: {
@@ -54,35 +55,11 @@
 		},
 
 		computed: {
-			itemsPerRow(): number {
-				if (this.$vuetify.breakpoint.xs) {
-					return 1;
-				}
-
-				if (this.$vuetify.breakpoint.sm) {
-					return 2;
-				}
-
-				if (this.$vuetify.breakpoint.md) {
-					return 3;
-				}
-
-				return 4;
-			},
-
-			loaders(): number[] {
-				return Array.apply(null, Array(this.itemsPerRow)).map((item, index) => index);
-			},
-
-			limit(): number {
-				return (this.itemsPerRow * 3) - 1;
-			},
-
 			...mapState(GifsStoreNamespace, {
 				trendingGifs: (state: GifsState) => state.trendingGifs,
 
 				isLoading: (state: GifsState) => state.isLoading,
-			})
+			}),
 		},
 
 		created() {
