@@ -4,6 +4,12 @@
 	export default Vue.extend({
 		name: 'GridMixin',
 
+		data() {
+			return {
+				numberOfRows: 4 as number,
+			};
+		},
+
 		computed: {
 			itemsPerRow(): number {
 				if (this.$vuetify.breakpoint.xs) {
@@ -22,7 +28,7 @@
 			},
 
 			limit(): number {
-				return (this.itemsPerRow * 3) - 1;
+				return (this.itemsPerRow * this.numberOfRows) - 1;
 			},
 
 			loaders(): number[] {
