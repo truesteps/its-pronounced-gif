@@ -2,10 +2,14 @@
 	<v-row>
 		<v-col cols="12">
 			<v-row>
-				<v-col cols="12" class="text-center">
-					<h2 class="text-left">
+				<v-col cols="12">
+					<h2>
 						Trending GIFs
 					</h2>
+
+					<span>
+						Click on a GIF to copy its URL to your clipboard.
+					</span>
 				</v-col>
 			</v-row>
 

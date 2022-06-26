@@ -2,16 +2,25 @@
 	<v-row>
 		<v-col cols="12">
 			<v-row>
-				<v-col cols="12" class="text-center">
-					<h2 class="text-left">
+				<v-col cols="12">
+					<h2>
 						Search GIFs
 					</h2>
+
+					<span>
+						Click on a GIF to copy its URL to your clipboard.
+					</span>
 				</v-col>
 			</v-row>
 
 			<v-row>
 				<v-col cols="12">
-					<v-text-field v-model="search" label="Type to search..." autofocus />
+					<v-text-field
+						v-model="search"
+						label="Type to search..."
+						clearable
+						autofocus
+					/>
 				</v-col>
 			</v-row>
 
@@ -20,7 +29,7 @@
 					<gif-card :gif="gif" />
 				</v-col>
 
-				<v-col v-if="!isLoading" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
+				<v-col v-if="gifs.length > 0" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
 					<show-more-gifs @loadMore="load(false)" />
 				</v-col>
 			</v-row>
@@ -77,7 +86,7 @@
 
 		data() {
 			return {
-				search: '' as string,
+				search: '' as string | null,
 				searchTermLengthThreshold: 3 as number,
 				typingGifs: [
 					'https://c.tenor.com/KkerOljBwakAAAAd/computer-nerd.gif',
@@ -95,7 +104,7 @@
 
 		computed: {
 			hasValidSearchTerm(): boolean {
-				return this.search.length >= this.searchTermLengthThreshold;
+				return (this.search || '').length >= this.searchTermLengthThreshold;
 			},
 
 			...mapState(GifsStoreNamespace, {
@@ -111,14 +120,14 @@
 
 		watch: {
 			search: {
-				handler(newValue: string, oldValue: string) {
+				handler(newValue: string | null, oldValue: string | null) {
 					// if the search query didn't change, we skip handler
 					if (newValue === oldValue) {
 						return;
 					}
 
 					// in case the search term is too short, we clear the URL query and skip handler
-					if (newValue.length < this.searchTermLengthThreshold) {
+					if ((newValue || '').length < this.searchTermLengthThreshold) {
 						this.$router.push({
 							query: {
 								search: undefined,
@@ -152,7 +161,7 @@
 		},
 
 		methods: {
-			async load(resetGifs: boolean = false) {
+			async load(resetGifs: boolean = false): Promise<void> {
 				// do something in the future
 
 				if (resetGifs) {
@@ -171,6 +180,13 @@
 			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false) {
 				this.load(resetGifs);
 			}, debounceTimeMs),
+
+			clearSearch(event: Event): void {
+				event.preventDefault();
+				event.stopPropagation();
+
+				this.search = '';
+			},
 
 			...mapActions(GifsStoreNamespace, {
 				fetchGifs: ActionType.FETCH_GIFS,
