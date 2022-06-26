@@ -17,6 +17,11 @@ const config: NuxtConfig = {
 		'@nuxtjs/vuetify'
 	],
 
+	server: {
+		port: process.env.PORT || 3000,
+		host: process.env.HOST,
+	},
+
 	css: [],
 
 	publicRuntimeConfig: {
