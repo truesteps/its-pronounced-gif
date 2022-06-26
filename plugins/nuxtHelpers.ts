@@ -3,6 +3,7 @@ import axios, { CancelToken, CancelTokenSource } from 'axios';
 
 type GetCancelToken = (tokenName: string) => CancelToken;
 type GetRandomInt = (min: number, max: number) => number;
+type CopyToClipboard = (text: string) => void;
 
 interface CancelTokenSources {
 	[key: string]: CancelTokenSource;
@@ -11,6 +12,7 @@ interface CancelTokenSources {
 interface Helpers {
 	getCancelToken: GetCancelToken;
 	getRandomInt: GetRandomInt;
+	copyToClipboard: CopyToClipboard;
 }
 
 declare module 'vue/types/vue' {
@@ -46,6 +48,35 @@ const nuxtHelpers: Helpers = {
 
 		// The maximum is exclusive and the minimum is inclusive
 		return Math.floor(Math.random() * (max - min) + min);
+	},
+
+	// return a promise
+	copyToClipboard(textToCopy: string): Promise<void> {
+		// navigator clipboard api needs a secure context (https)
+		if (navigator.clipboard && window.isSecureContext) {
+			// navigator clipboard api method
+			return navigator.clipboard.writeText(textToCopy);
+		} else {
+			// text area method
+			const textArea: HTMLTextAreaElement = document.createElement('textarea');
+
+			textArea.value = textToCopy;
+			// make the textarea out of viewport
+			textArea.style.position = 'fixed';
+			textArea.style.left = '-999999px';
+			textArea.style.top = '-999999px';
+
+			document.body.appendChild(textArea);
+
+			textArea.focus();
+			textArea.select();
+
+			return new Promise((res, rej) => {
+				// here the magic happens
+				document.execCommand('copy') ? res() : rej();
+				textArea.remove();
+			});
+		}
 	}
 };
 
