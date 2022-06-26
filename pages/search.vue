@@ -150,8 +150,6 @@
 			...mapMutations(GifsStoreNamespace, {
 				resetGifs: MutationType.RESET_GIFS,
 			}),
-
-			//debouncedFetchGifs: debounce(this.fetchGifs, this.debounceTimeMs),
 		}
 	});
 </script>
