@@ -25,6 +25,22 @@
 				</v-col>
 			</v-row>
 
+			<v-row v-else>
+				<v-col cols="12">
+					<v-img height="200" contain :src="typingGifs[typingGifsRandomizer]">
+						<template #placeholder>
+							<v-row
+								class="fill-height ma-0"
+								align="center"
+								justify="center"
+							>
+								<v-progress-circular indeterminate color="grey" />
+							</v-row>
+						</template>
+					</v-img>
+				</v-col>
+			</v-row>
+
 			<v-row v-if="isLoading">
 				<v-col v-for="loader in loaders" :key="loader" cols="12" sm="6" md="4" lg="3">
 					<v-skeleton-loader
@@ -63,6 +79,17 @@
 			return {
 				search: '' as string,
 				searchTermLengthThreshold: 3 as number,
+				typingGifs: [
+					'https://c.tenor.com/KkerOljBwakAAAAd/computer-nerd.gif',
+					'https://c.tenor.com/bCfpwMjfAi0AAAAC/cat-typing.gif',
+					'https://c.tenor.com/z4_HKSF6Nx8AAAAC/typing-jim-carrey.gif',
+					'https://c.tenor.com/M8NOboaCB2MAAAAC/peter-griffin-nails.gif',
+					'https://c.tenor.com/JJ_is357rXYAAAAd/spike-monkey-typing.gif',
+					'https://c.tenor.com/VrzXhtoSwcsAAAAd/hacker-typing.gif',
+					'https://c.tenor.com/jCk8c5_Q4J0AAAAC/hacker.gif',
+					'https://c.tenor.com/W93VsNUYX6MAAAAd/sa-tis-c.gif',
+				] as string[],
+				typingGifsRandomizer: 0 as number,
 			};
 		},
 
@@ -113,6 +140,8 @@
 		},
 
 		created() {
+			this.typingGifsRandomizer = this.$helpers.getRandomInt(0, this.typingGifs.length - 1);
+
 			if (this.$route.query.search) {
 				this.search = this.$route.query.search as string;
 			}
