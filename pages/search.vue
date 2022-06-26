@@ -137,10 +137,6 @@
 					limit: this.gifs.length < 1 ? this.limit : this.limit + 1,
 					q: this.search,
 				});
-
-				// ToDo: reset gifs before new query if searchTerm changed
-				// ToDo: perform search with new searchTerm
-				// ToDo: merge common functionality from index page and search page into a mixin
 			},
 
 			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false) {
