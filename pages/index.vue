@@ -18,7 +18,7 @@
 					<gif-card :gif="trendingGif" />
 				</v-col>
 
-				<v-col key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
+				<v-col v-if="!reachedEnd" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
 					<load-more-gifs @loadMore="load" />
 				</v-col>
 			</v-row>
@@ -63,6 +63,8 @@
 				trendingGifs: (state: GifsState) => state.trendingGifs,
 
 				isLoading: (state: GifsState) => state.isLoading,
+
+				reachedEnd: (state: GifsState) => state.reachedEnd,
 			}),
 		},
 

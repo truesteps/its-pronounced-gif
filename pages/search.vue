@@ -30,7 +30,7 @@
 					<gif-card :gif="gif" />
 				</v-col>
 
-				<v-col v-if="gifs.length > 0" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
+				<v-col v-if="gifs.length > 0 && !reachedEnd" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
 					<load-more-gifs @loadMore="load(false, $event)" />
 				</v-col>
 			</v-row>
@@ -133,6 +133,8 @@
 				gifs: (state: GifsState) => state.gifs,
 
 				isLoading: (state: GifsState) => state.isLoading,
+
+				reachedEnd: (state: GifsState) => state.reachedEnd,
 			})
 		},
 

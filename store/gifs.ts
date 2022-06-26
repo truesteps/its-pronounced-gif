@@ -10,6 +10,7 @@ export interface GifsState {
 	trendingGifsNextPosition: string | null;
 	gifs: Gif[];
 	gifsNextPosition: string | null;
+	reachedEnd: boolean;
 }
 
 export const state = (): GifsState => ({
@@ -18,6 +19,7 @@ export const state = (): GifsState => ({
 	trendingGifsNextPosition: null,
 	gifs: [],
 	gifsNextPosition: null,
+	reachedEnd: false,
 });
 
 export const MutationType = {
@@ -28,7 +30,7 @@ export const MutationType = {
 	SET_GIFS: 'setGifs',
 	SET_GIFS_NEXT_POSITION: 'setGifsNextPosition',
 	RESET_GIFS: 'resetGifs',
-	SET_CANCEL_TOKEN_SOURCE: 'setCancelTokenSource',
+	SET_REACHED_END: 'setReachedEnd',
 };
 
 export const mutations: MutationTree<GifsState> = {
@@ -51,6 +53,7 @@ export const mutations: MutationTree<GifsState> = {
 	[MutationType.RESET_TRENDING_GIFS]: (state) => {
 		state.trendingGifs = [];
 		state.trendingGifsNextPosition = null;
+		state.reachedEnd = false;
 	},
 
 	[MutationType.SET_GIFS]: (state, newGifs: Gif[]) => {
@@ -68,6 +71,11 @@ export const mutations: MutationTree<GifsState> = {
 	[MutationType.RESET_GIFS]: (state) => {
 		state.gifs = [];
 		state.gifsNextPosition = null;
+		state.reachedEnd = false;
+	},
+
+	[MutationType.SET_REACHED_END]: (state, reachedEnd: boolean) => {
+		state.reachedEnd = reachedEnd;
 	},
 };
 
@@ -96,7 +104,13 @@ export const actions: ActionTree<GifsState, RootState> = {
 			});
 
 			commit(MutationType.SET_TRENDING_GIFS, results);
-			commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, next);
+
+			if (!next) {
+				commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, null);
+				commit(MutationType.SET_REACHED_END, true);
+			} else {
+				commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, next);
+			}
 		} catch (error) {
 			if (this.$axios.isCancel(error)) {
 				console.log('Request canceled', error);
@@ -136,7 +150,13 @@ export const actions: ActionTree<GifsState, RootState> = {
 			});
 
 			commit(MutationType.SET_GIFS, results);
-			commit(MutationType.SET_GIFS_NEXT_POSITION, next);
+
+			if (!next) {
+				commit(MutationType.SET_GIFS_NEXT_POSITION, null);
+				commit(MutationType.SET_REACHED_END, true);
+			} else {
+				commit(MutationType.SET_GIFS_NEXT_POSITION, next);
+			}
 		} catch (error) {
 			if (this.$axios.isCancel(error)) {
 				console.log('Request canceled', error);
