@@ -15,12 +15,12 @@
 				</v-col>
 			</v-row>
 
-			<v-row v-if="hasValidSearchTerm && !isLoading">
+			<v-row v-if="hasValidSearchTerm">
 				<v-col v-for="gif in gifs" :key="gif.id" cols="12" sm="6" md="4" lg="3">
 					<gif-card :gif="gif" />
 				</v-col>
 
-				<v-col key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
+				<v-col v-if="!isLoading" key="show-more-gifs" cols="12" sm="6" md="4" lg="3">
 					<show-more-gifs @loadMore="load(false)" />
 				</v-col>
 			</v-row>
@@ -49,6 +49,8 @@
 	import GifCard from '~/components/GifCard.vue';
 	import ShowMoreGifs from '~/components/ShowMoreGifs.vue';
 
+	const debounceTimeMs: number = 200;
+
 	export default GridMixin.extend({
 		name: 'SearchPage',
 
@@ -61,7 +63,6 @@
 			return {
 				search: '' as string,
 				searchTermLengthThreshold: 3 as number,
-				debounceTimeMs: 200 as number,
 			};
 		},
 
@@ -105,7 +106,7 @@
 						query: { search: newValue },
 					});
 
-					this.load(true);
+					this.loadWithDebounce(true);
 				},
 				immediate: true,
 			},
@@ -141,6 +142,10 @@
 				// ToDo: perform search with new searchTerm
 				// ToDo: merge common functionality from index page and search page into a mixin
 			},
+
+			loadWithDebounce: debounce(function (this: any, resetGifs: boolean = false) {
+				this.load(resetGifs);
+			}, debounceTimeMs),
 
 			...mapActions(GifsStoreNamespace, {
 				fetchGifs: ActionType.FETCH_GIFS,
