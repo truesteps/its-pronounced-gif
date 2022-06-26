@@ -1,9 +1,4 @@
 [build]
   publish = "dist/"
   command = "yarn generate"
-  environment = {
-   NODE_VERSION = "16",
-   APP_ENV = "production",
-   TENOR_API_KEY = "AIzaSyB-RfjfF7ZgG5OF8tSUNnaWguxUo-bfupI",
-   TENOR_API_CLIENT = "its_pronounced_gif"
-  }
+  environment = { NODE_VERSION = "16", APP_ENV = "production", TENOR_API_KEY = "AIzaSyB-RfjfF7ZgG5OF8tSUNnaWguxUo-bfupI", TENOR_API_CLIENT = "its_pronounced_gif" }
