@@ -1,8 +1,13 @@
-import axios from 'axios';
 import { Plugin } from '@nuxt/types';
 
-const axiosPlugin: Plugin = function interceptingAxios({ app, store, $axios }) {
+const axiosPlugin: Plugin = function interceptingAxios({ app, $axios }) {
 	$axios.onRequest((config) => {
-		app.$debug(`"${config.method}" request to ${config.url}`);
+		if (app.$config.appEnv === 'production') {
+			return;
+		}
+
+		console.log(`"${config.method}" request to ${config.url}`);
 	});
 };
+
+export default axiosPlugin;

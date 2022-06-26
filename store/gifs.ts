@@ -1,7 +1,6 @@
 import { Gif } from '~/types/gifs';
 import { ActionTree, MutationTree } from 'vuex';
 import { RootState } from '~/store/index';
-import { CancelTokenSource } from 'axios';
 
 export const Namespace = 'gifs';
 
@@ -11,7 +10,6 @@ export interface GifsState {
 	trendingGifsNextPosition: string | null;
 	gifs: Gif[];
 	gifsNextPosition: string | null;
-	cancelTokenSource: CancelTokenSource | null;
 }
 
 export const state = (): GifsState => ({
@@ -20,7 +18,6 @@ export const state = (): GifsState => ({
 	trendingGifsNextPosition: null,
 	gifs: [],
 	gifsNextPosition: null,
-	cancelTokenSource: null,
 });
 
 export const MutationType = {
@@ -54,7 +51,6 @@ export const mutations: MutationTree<GifsState> = {
 	[MutationType.RESET_TRENDING_GIFS]: (state) => {
 		state.trendingGifs = [];
 		state.trendingGifsNextPosition = null;
-		state.cancelTokenSource = null;
 	},
 
 	[MutationType.SET_GIFS]: (state, newGifs: Gif[]) => {
@@ -72,12 +68,7 @@ export const mutations: MutationTree<GifsState> = {
 	[MutationType.RESET_GIFS]: (state) => {
 		state.gifs = [];
 		state.gifsNextPosition = null;
-		state.cancelTokenSource = null;
 	},
-
-	[MutationType.SET_CANCEL_TOKEN_SOURCE]: (state, cancelTokenSource: CancelTokenSource | null) => {
-		state.cancelTokenSource = cancelTokenSource;
-	}
 };
 
 export const ActionType = {
@@ -94,18 +85,9 @@ export const actions: ActionTree<GifsState, RootState> = {
 		}
 
 		try {
-			// if previous request running, cancel it
-			if (state.cancelTokenSource) {
-				state.cancelTokenSource.cancel();
-			}
-
-			const cancelTokenSource = this.$axios.CancelToken.source();
-
-			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, cancelTokenSource);
-
 			// extract results from response, corresponds to Gif[]
 			const { results, next } = await this.$axios.$get('/featured', {
-				cancelToken: cancelTokenSource.token,
+				cancelToken: this.$helpers.getCancelToken('gifs/trendingGifs'),
 				params: {
 					limit: 10,
 					media_filter: 'gif',
@@ -115,7 +97,6 @@ export const actions: ActionTree<GifsState, RootState> = {
 
 			commit(MutationType.SET_TRENDING_GIFS, results);
 			commit(MutationType.SET_TRENDING_GIFS_NEXT_POSITION, next);
-			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, null);
 		} catch (error) {
 			if (this.$axios.isCancel(error)) {
 				console.log('Request canceled', error);
@@ -137,18 +118,9 @@ export const actions: ActionTree<GifsState, RootState> = {
 		}
 
 		try {
-			// if previous request running, cancel it
-			if (state.cancelTokenSource) {
-				state.cancelTokenSource.cancel();
-			}
-
-			const cancelTokenSource = this.$axios.CancelToken.source();
-
-			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, cancelTokenSource);
-
 			// extract results from response, corresponds to Gif[]
 			const { results, next } = await this.$axios.$get('/search', {
-				cancelToken: cancelTokenSource.token,
+				cancelToken: this.$helpers.getCancelToken('gifs/gifs'),
 				params: {
 					limit: 10,
 					media_filter: 'gif',
@@ -158,7 +130,6 @@ export const actions: ActionTree<GifsState, RootState> = {
 
 			commit(MutationType.SET_GIFS, results);
 			commit(MutationType.SET_GIFS_NEXT_POSITION, next);
-			commit(MutationType.SET_CANCEL_TOKEN_SOURCE, null);
 		} catch (error) {
 			if (this.$axios.isCancel(error)) {
 				console.log('Request canceled', error);

@@ -20,6 +20,7 @@ const config: NuxtConfig = {
 	css: [],
 
 	publicRuntimeConfig: {
+		appEnv: process.env.APP_ENV,
 		tenorApiKey: process.env.TENOR_API_KEY,
 		tenorClientKey: process.env.TENOR_CLIENT_KEY,
 		tenorBaseUrl: process.env.TENOR_BASE_URL,
@@ -44,7 +45,7 @@ const config: NuxtConfig = {
 			{ rel: 'apple-touch-icon', sizes: '152x152', href: '../favicon/apple-touch-icon.png' },
 			{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '../favicon/favicon-32x32.png' },
 			{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '../favicon/favicon-16x16.png' },
-			{ rel: 'manifest', href: '../favicon/site.webmanifest.txt' },
+			{ rel: 'manifest', href: '../favicon/site.webmanifest' },
 			{ rel: 'mask-icon', href: '../favicon/safari-pinned-tab.svg', color: '#26262b' },
 		]
 	},
@@ -59,7 +60,9 @@ const config: NuxtConfig = {
 	],
 
 	plugins: [
-		'~/plugins/truncate'
+		'~/plugins/axios',
+		'~/plugins/truncate',
+		'~/plugins/nuxtHelpers',
 	],
 
 	// Nuxt clipboard module configuration https://github.com/chantouchsek/nuxt-clipboard
