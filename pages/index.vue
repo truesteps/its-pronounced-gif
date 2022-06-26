@@ -75,13 +75,13 @@
 		},
 
 		methods: {
-			async load(loadMoreEvent?: { weAreBurningBoys: boolean; } | undefined): Promise<void> {
+			async load(loadMoreEvent?: { shouldLoadDouble: boolean; } | undefined): Promise<void> {
 				// if we're loading the first batch of gifs, subtract 1 from the limit to show the "load more" button
 				let limit = this.trendingGifs.length < 1 ? this.limit : this.limit + 1;
 
 				// if we're entering burning CORPSES WITH THE AMOUNT OF GIFS THAT CAME FROM THE UNDERWORLD mode
 				// let's DOUBLE the limit, yes, you heard me, DOBULE IT!
-				if (loadMoreEvent && loadMoreEvent.weAreBurningBoys) {
+				if (loadMoreEvent && loadMoreEvent.shouldLoadDouble) {
 					limit *= 2;
 				}
 

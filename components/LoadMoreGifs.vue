@@ -7,7 +7,7 @@
 		@mouseenter="setIsHovering(true)"
 		@mouseleave="setIsHovering(false)"
 	>
-		<v-card-text class="h-100" :style="style">
+		<v-card-text class="h-100" :style="computedStyle">
 			<v-row
 				class="fill-height ma-0"
 				align="center"
@@ -55,7 +55,7 @@
 				return this.isOverBurningClicksThreshold ? 'Load MORE FUCKING GIFs' : 'Load more GIFs';
 			},
 
-			style(): string {
+			computedStyle(): string {
 				if (!this.isOverBurningClicksThreshold) {
 					return '';
 				}
@@ -69,7 +69,7 @@
 				this.clicksCount++;
 
 				this.$emit('loadMore', {
-					weAreBurningBoys: this.isOverBurningClicksThreshold,
+					shouldLoadDouble: this.isOverBurningClicksThreshold,
 				});
 			},
 		},

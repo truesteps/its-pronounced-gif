@@ -161,7 +161,7 @@
 		},
 
 		methods: {
-			async load(resetGifs: boolean = false, loadMoreEvent?: { weAreBurningBoys: boolean; } | undefined): Promise<void> {
+			async load(resetGifs: boolean = false, loadMoreEvent?: { shouldLoadDouble: boolean; } | undefined): Promise<void> {
 				if (resetGifs) {
 					this.resetGifs();
 				}
@@ -171,7 +171,7 @@
 
 				// if we're entering burning CORPSES WITH THE AMOUNT OF GIFS THAT CAME FROM THE UNDERWORLD mode
 				// let's DOUBLE the limit, yes, you heard me, DOBULE IT!
-				if (loadMoreEvent && loadMoreEvent.weAreBurningBoys) {
+				if (loadMoreEvent && loadMoreEvent.shouldLoadDouble) {
 					limit *= 2;
 				}
 
