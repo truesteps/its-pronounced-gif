@@ -60,7 +60,7 @@
 					return '';
 				}
 
-				return `background-image: url('${this.burningImageSrc}'); background-position: cover`;
+				return `background-image: url('${this.burningImageSrc}'); background-position: 50%; background-size: cover;`;
 			},
 		},
 
